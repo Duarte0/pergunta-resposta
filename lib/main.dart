@@ -10,18 +10,34 @@ void main(List<String> args) {
 // StatefulWidget é mutavel - pode mudar a UI intermanete
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
   final _perguntas = const [
     {
       'texto': 'Qual é sua cor favorita?',
-      'respostas': ['preto', 'vermelho', 'verde', 'branco']
+      'respostas': [
+        {'texto': 'preto', 'pontuacao': 10},
+        {'texto': 'vermelho', 'pontuacao': 5},
+        {'texto': 'verde', 'pontuacao': 3},
+        {'texto': 'branco', 'pontuacao': 1}
+      ]
     },
     {
       'texto': 'Qual é seu animal favorito?',
-      'respostas': ['coelho', 'cobra', 'elefante', 'leao']
+      'respostas': [
+        {'texto': 'coelho', 'pontuacao': 10},
+        {'texto': 'cobra', 'pontuacao': 5},
+        {'texto': 'elefante', 'pontuacao': 3},
+        {'texto': 'leao', 'pontuacao': 1}
+      ]
     },
     {
       'texto': 'Qual é seu instrutor favorito?',
-      'respostas': ['maria', 'joao', 'leo', 'pedro']
+      'respostas': [
+        {'texto': 'maria', 'pontuacao': 10},
+        {'texto': 'joao', 'pontuacao': 5},
+        {'texto': 'leo', 'pontuacao': 3},
+        {'texto': 'pedro', 'pontuacao': 1},
+      ]
     }
   ];
 
@@ -29,12 +45,20 @@ class _PerguntaAppState extends State<PerguntaApp> {
     return _perguntaSelecionada < _perguntas.length;
   }
 
-  _responder() {
+  _responder(int pontuacao) {
     if (temPerguntaSelecionada) {
       setState(() {
         _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
       });
     }
+  }
+
+  _reinicarQuestionario() {
+    setState(() {
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
   }
 
   // construtor
@@ -53,7 +77,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
                   perguntas: _perguntas,
                   responder: _responder,
                   perguntaSelecionada: _perguntaSelecionada)
-              : const Resultado()),
+              : Resultado(_pontuacaoTotal, _reinicarQuestionario)),
     );
   }
 }
